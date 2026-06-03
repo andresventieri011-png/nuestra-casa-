@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Nuestra Casa S.A.</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --accent:#D85A30;--accent-hover:#993C1D;--accent-light:#FAECE7;
+    --dark:#1e1e1c;--dark2:#2C2C2A;--dark3:#444441;
+    --text:#1e1e1c;--text-muted:#5F5E5A;--text-hint:#888780;
+    --border:#e0ded8;--bg:#ffffff;--bg2:#F8F7F4;
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg2);min-height:100vh}
+
+  /* LOGIN */
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:36px;width:100%;max-width:360px;text-align:center}
+  .login-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px}
+  .logo-dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .login-logo span{font-size:16px;font-weight:700;color:var(--text)}
+  .login-card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+  .login-card p{font-size:13px;color:var(--text-hint);margin-bottom:24px}
+  .login-card input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;margin-bottom:12px;background:var(--bg);color:var(--text);font-family:inherit}
+  .login-card input:focus{outline:none;border-color:var(--accent)}
+  .login-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .login-btn:hover{background:var(--accent-hover)}
+  .login-error{font-size:12px;color:#A32D2D;margin-top:8px;display:none}
+
+  /* ADMIN LAYOUT */
+  .admin-wrap{display:none;min-height:100vh}
+  .admin-header{background:var(--dark2);border-bottom:1px solid var(--dark3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+  .admin-logo{display:flex;align-items:center;gap:8px}
+  .admin-logo span{font-size:14px;font-weight:600;color:#F1EFE8}
+  .admin-logo .logo-dot{background:var(--accent)}
+  .admin-badge{font-size:11px;padding:3px 9px;background:rgba(216,90,48,0.2);color:#F0997B;border-radius:20px;font-weight:600}
+  .header-right{display:flex;align-items:center;gap:12px}
+  .btn-site{font-size:12px;padding:6px 14px;background:transparent;color:#888780;border:1px solid var(--dark3);border-radius:6px;cursor:pointer;text-decoration:none;font-family:inherit}
+  .btn-logout{font-size:12px;padding:6px 14px;background:transparent;color:#888780;border:none;cursor:pointer;font-family:inherit}
+
+  .admin-main{max-width:1000px;margin:0 auto;padding:32px 24px}
+  .admin-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+  .admin-top h1{font-size:22px;font-weight:700;color:var(--text)}
+  .btn-add{font-size:13px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:7px}
+  .btn-add:hover{background:var(--accent-hover)}
+
+  /* TABLA */
+  .obras-table{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;gap:0;padding:12px 20px;background:var(--bg2);border-bottom:1px solid var(--border)}
+  .th{font-size:11px;font-weight:600;color:var(--text-hint);letter-spacing:0.06em;text-transform:uppercase}
+  .obra-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;gap:0;padding:14px 20px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.1s}
+  .obra-row:last-child{border-bottom:none}
+  .obra-row:hover{background:var(--bg2)}
+  .obra-row-name{font-size:14px;font-weight:600;color:var(--text)}
+  .obra-row-sub{font-size:12px;color:var(--text-hint);margin-top:2px}
+  .td{font-size:13px;color:var(--text-muted)}
+  .status-pill{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;display:inline-block}
+  .pill-ok{background:#EAF3DE;color:#3B6D11}
+  .pill-wip{background:#FAEEDA;color:#854F0B}
+  .row-actions{display:flex;gap:6px}
+  .btn-edit{font-size:12px;padding:5px 12px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);border-radius:5px;cursor:pointer;font-family:inherit}
+  .btn-edit:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-del{font-size:12px;padding:5px 9px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);border-radius:5px;cursor:pointer;font-family:inherit}
+  .btn-del:hover{border-color:#A32D2D;color:#A32D2D}
+  .table-empty{padding:48px;text-align:center;color:var(--text-hint);font-size:14px}
+  .table-loading{padding:32px;text-align:center;color:var(--text-hint);font-size:13px}
+
+  /* MODAL FORM */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--bg);border-radius:14px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+  .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--bg)}
+  .modal-title{font-size:16px;font-weight:700;color:var(--text)}
+  .modal-close-btn{background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-hint);padding:4px;line-height:1}
+  .modal-body{padding:22px 24px 24px}
+
+  .form-group{margin-bottom:18px}
+  .form-label{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;display:block;letter-spacing:0.03em}
+  .form-input,.form-select,.form-textarea{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:7px;font-size:14px;color:var(--text);background:var(--bg);font-family:inherit;transition:border-color 0.15s}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--accent)}
+  .form-textarea{min-height:80px;resize:vertical}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  /* FOTO UPLOAD */
+  .fotos-label{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:8px;display:block;letter-spacing:0.03em}
+  .fotos-drop{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color 0.15s;margin-bottom:10px}
+  .fotos-drop:hover{border-color:var(--accent)}
+  .fotos-drop p{font-size:13px;color:var(--text-hint)}
+  .fotos-drop span{font-size:12px;color:var(--accent);font-weight:600}
+  .fotos-preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .foto-preview-item{position:relative;width:72px;height:72px;border-radius:7px;overflow:hidden;border:1px solid var(--border)}
+  .foto-preview-item img{width:100%;height:100%;object-fit:cover}
+  .foto-remove{position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .fotos-existing{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+
+  /* URL input alternativa */
+  .url-input-wrap{display:flex;gap:8px}
+  .url-input-wrap input{flex:1}
+  .btn-add-url{font-size:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--text-muted);font-family:inherit;white-space:nowrap}
+  .btn-add-url:hover{border-color:var(--accent);color:var(--accent)}
+
+  .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--bg)}
+  .btn-cancel{font-size:13px;padding:10px 18px;background:transparent;border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--text-muted);font-family:inherit}
+  .btn-save{font-size:13px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-family:inherit}
+  .btn-save:hover{background:var(--accent-hover)}
+  .btn-save:disabled{opacity:0.6;cursor:not-allowed}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all 0.25s}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast-ok{background:#EAF3DE;color:#3B6D11;border:1px solid #97C459}
+  .toast-err{background:#FCEBEB;color:#A32D2D;border:1px solid #F09595}
+
+  @media(max-width:600px){
+    .table-header,.obra-row{grid-template-columns:1fr auto}
+    .th:not(:first-child),.td:not(:last-child){display:none}
+    .obra-row-name,.obra-row-sub{display:block}
+    .form-row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo"><div class="logo-dot"></div><span>Nuestra Casa S.A.</span></div>
+    <h2>Panel admin</h2>
+    <p>Ingresá la contraseña para continuar</p>
+    <input type="password" id="pwd-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Ingresar</button>
+    <p class="login-error" id="login-error">Contraseña incorrecta.</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="admin-wrap">
+  <div class="admin-header">
+    <div class="admin-logo">
+      <div class="logo-dot"></div>
+      <span>Nuestra Casa S.A.</span>
+      <span class="admin-badge">Admin</span>
+    </div>
+    <div class="header-right">
+      <a href="index.html" target="_blank" class="btn-site">Ver sitio ↗</a>
+      <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="admin-main">
+    <div class="admin-top">
+      <h1>Obras</h1>
+      <button class="btn-add" onclick="openForm()">+ Agregar obra</button>
+    </div>
+    <div class="obras-table">
+      <div class="table-header">
+        <div class="th">Obra</div>
+        <div class="th">Tipo</div>
+        <div class="th">Año</div>
+        <div class="th">Estado</div>
+        <div class="th"></div>
+      </div>
+      <div id="table-body"><div class="table-loading">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="form-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <p class="modal-title" id="form-title">Nueva obra</p>
+      <button class="modal-close-btn" onclick="closeForm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="form-id">
+      <div class="form-group">
+        <label class="form-label">Nombre de la obra *</label>
+        <input type="text" class="form-input" id="form-nombre" placeholder="Ej: Casa Sarmiento 450">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tipo *</label>
+          <select class="form-select" id="form-tipo">
+            <option value="Casa">Casa</option>
+            <option value="Edificio">Edificio</option>
+            <option value="Reforma">Reforma</option>
+            <option value="Local">Local</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado *</label>
+          <select class="form-select" id="form-estado">
+            <option value="Terminada">Terminada</option>
+            <option value="En curso">En curso</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Año</label>
+        <input type="number" class="form-input" id="form-anio" placeholder="Ej: 2024" min="1990" max="2030">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-textarea" id="form-desc" placeholder="Una línea o dos sobre la obra..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="fotos-label">Fotos (pegá URLs de las fotos del IG)</label>
+        <div id="fotos-existing" class="fotos-existing"></div>
+        <div class="url-input-wrap">
+          <input type="url" class="form-input" id="foto-url-input" placeholder="https://... URL de la foto">
+          <button class="btn-add-url" onclick="addFotoUrl()">Agregar</button>
+        </div>
+        <div id="fotos-preview" class="fotos-preview" style="margin-top:10px"></div>
+        <p style="font-size:11px;color:var(--text-hint);margin-top:6px">Copiá el link directo de cada foto desde el Instagram y pegalo acá.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeForm()">Cancelar</button>
+      <button class="btn-save" id="btn-save" onclick="saveObra()">Guardar obra</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPA_URL = 'https://tsumgbkhsmajqiojqxny.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzdW1nYmtoc21hanFpb2pxeG55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NzE4MzIsImV4cCI6MjA5NTA0NzgzMn0.daKyMfNdZ92PCYt9OkHg-vqbqrFrIt6FzlGQeQ9xXs0';
+const ADMIN_PASS = 'nuestracasa2026';
+const HEADERS = {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json'};
+
+let obras = [];
+let pendingFotos = [];
+let existingFotos = [];
+
+// LOGIN
+function doLogin() {
+  const v = document.getElementById('pwd-input').value;
+  if (v === ADMIN_PASS) {
+    sessionStorage.setItem('nc_auth', '1');
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'block';
+    loadObras();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+function logout() {
+  sessionStorage.removeItem('nc_auth');
+  location.reload();
+}
+if (sessionStorage.getItem('nc_auth')) {
+  document.getElementById('login-wrap').style.display = 'none';
+  document.getElementById('admin-wrap').style.display = 'block';
+  loadObras();
+}
+
+// CARGAR OBRAS
+async function loadObras() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/obras?order=created_at.desc`, {headers: HEADERS});
+  obras = await res.json();
+  renderTable();
+}
+
+function renderTable() {
+  const body = document.getElementById('table-body');
+  if (!obras.length) {
+    body.innerHTML = '<div class="table-empty">No hay obras todavía. ¡Agregá la primera!</div>';
+    return;
+  }
+  body.innerHTML = obras.map(o => `
+    <div class="obra-row">
+      <div>
+        <p class="obra-row-name">${o.nombre}</p>
+        <p class="obra-row-sub">${o.descripcion ? o.descripcion.slice(0,50) + (o.descripcion.length > 50 ? '…' : '') : 'Sin descripción'}</p>
+      </div>
+      <div class="td">${o.tipo}</div>
+      <div class="td">${o.anio || '—'}</div>
+      <div class="td"><span class="status-pill ${o.estado === 'Terminada' ? 'pill-ok' : 'pill-wip'}">${o.estado}</span></div>
+      <div class="row-actions">
+        <button class="btn-edit" onclick="editObra('${o.id}')">Editar</button>
+        <button class="btn-del" onclick="deleteObra('${o.id}','${o.nombre.replace(/'/g,"\\'")}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// FORM
+function openForm(id) {
+  pendingFotos = [];
+  existingFotos = [];
+  document.getElementById('form-id').value = '';
+  document.getElementById('form-nombre').value = '';
+  document.getElementById('form-tipo').value = 'Casa';
+  document.getElementById('form-estado').value = 'Terminada';
+  document.getElementById('form-anio').value = '';
+  document.getElementById('form-desc').value = '';
+  document.getElementById('foto-url-input').value = '';
+  document.getElementById('fotos-preview').innerHTML = '';
+  document.getElementById('fotos-existing').innerHTML = '';
+  document.getElementById('form-title').textContent = 'Nueva obra';
+  document.getElementById('form-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function editObra(id) {
+  const o = obras.find(x => x.id === id);
+  if (!o) return;
+  pendingFotos = [];
+
+  const fotosRes = await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}&order=orden`, {headers: HEADERS});
+  existingFotos = await fotosRes.json();
+
+  document.getElementById('form-id').value = o.id;
+  document.getElementById('form-nombre').value = o.nombre;
+  document.getElementById('form-tipo').value = o.tipo;
+  document.getElementById('form-estado').value = o.estado;
+  document.getElementById('form-anio').value = o.anio || '';
+  document.getElementById('form-desc').value = o.descripcion || '';
+  document.getElementById('foto-url-input').value = '';
+  document.getElementById('fotos-preview').innerHTML = '';
+  document.getElementById('form-title').textContent = 'Editar obra';
+
+  const existingWrap = document.getElementById('fotos-existing');
+  existingWrap.innerHTML = existingFotos.map((f,i) => `
+    <div class="foto-preview-item" id="ef-${f.id}">
+      <img src="${f.foto_url}" alt="foto">
+      <button class="foto-remove" onclick="removeExistingFoto('${f.id}')">✕</button>
+    </div>
+  `).join('');
+
+  document.getElementById('form-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeForm() {
+  document.getElementById('form-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function addFotoUrl() {
+  const input = document.getElementById('foto-url-input');
+  const url = input.value.trim();
+  if (!url) return;
+  pendingFotos.push(url);
+  const preview = document.getElementById('fotos-preview');
+  const idx = pendingFotos.length - 1;
+  const div = document.createElement('div');
+  div.className = 'foto-preview-item';
+  div.id = 'pf-' + idx;
+  div.innerHTML = `<img src="${url}" alt="foto" onerror="this.parentElement.style.background='#fee'"><button class="foto-remove" onclick="removePendingFoto(${idx})">✕</button>`;
+  preview.appendChild(div);
+  input.value = '';
+}
+
+function removePendingFoto(idx) {
+  pendingFotos[idx] = null;
+  const el = document.getElementById('pf-' + idx);
+  if (el) el.remove();
+}
+
+function removeExistingFoto(id) {
+  existingFotos = existingFotos.filter(f => f.id !== id);
+  const el = document.getElementById('ef-' + id);
+  if (el) el.remove();
+}
+
+async function saveObra() {
+  const nombre = document.getElementById('form-nombre').value.trim();
+  if (!nombre) return showToast('El nombre es obligatorio.', false);
+
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  const id = document.getElementById('form-id').value;
+  const data = {
+    nombre,
+    tipo: document.getElementById('form-tipo').value,
+    estado: document.getElementById('form-estado').value,
+    anio: parseInt(document.getElementById('form-anio').value) || null,
+    descripcion: document.getElementById('form-desc').value.trim() || null,
+  };
+
+  let obraId = id;
+  if (id) {
+    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {
+      method: 'PATCH', headers: {...HEADERS, 'Prefer': 'return=minimal'}, body: JSON.stringify(data)
+    });
+    // eliminar fotos que sacamos
+    const originalIds = (await (await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {headers: HEADERS})).json()).map(f => f.id);
+    const keepIds = existingFotos.map(f => f.id);
+    for (const fid of originalIds) {
+      if (!keepIds.includes(fid)) {
+        await fetch(`${SUPA_URL}/rest/v1/obra_fotos?id=eq.${fid}`, {method: 'DELETE', headers: HEADERS});
+      }
+    }
+  } else {
+    const res = await fetch(`${SUPA_URL}/rest/v1/obras`, {
+      method: 'POST', headers: {...HEADERS, 'Prefer': 'return=representation'}, body: JSON.stringify(data)
+    });
+    const created = await res.json();
+    obraId = created[0]?.id;
+  }
+
+  // guardar fotos nuevas
+  const newFotos = pendingFotos.filter(Boolean);
+  if (newFotos.length && obraId) {
+    const payload = newFotos.map((url, i) => ({obra_id: obraId, foto_url: url, orden: existingFotos.length + i}));
+    await fetch(`${SUPA_URL}/rest/v1/obra_fotos`, {
+      method: 'POST', headers: HEADERS, body: JSON.stringify(payload)
+    });
+    // portada = primera foto
+    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${obraId}`, {
+      method: 'PATCH', headers: {...HEADERS, 'Prefer': 'return=minimal'}, body: JSON.stringify({portada_url: newFotos[0]})
+    });
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Guardar obra';
+  closeForm();
+  showToast(id ? 'Obra actualizada ✓' : 'Obra agregada ✓', true);
+  loadObras();
+}
+
+async function deleteObra(id, nombre) {
+  if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
+  await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {method: 'DELETE', headers: HEADERS});
+  await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {method: 'DELETE', headers: HEADERS});
+  showToast('Obra eliminada.', true);
+  loadObras();
+}
+
+function showToast(msg, ok) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${ok ? 'toast-ok' : 'toast-err'} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.getElementById('form-modal').addEventListener('click', e => {
+  if (e.target.id === 'form-modal') closeForm();
+});
+</script>
+</body>
+</html>

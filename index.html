@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra Casa S.A. — Chivilcoy</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --accent:#D85A30;
+    --accent-hover:#993C1D;
+    --accent-light:#FAECE7;
+    --dark:#1e1e1c;
+    --dark2:#2C2C2A;
+    --dark3:#444441;
+    --cream:#F1EFE8;
+    --cream2:#D3D1C7;
+    --text:#1e1e1c;
+    --text-muted:#5F5E5A;
+    --text-hint:#888780;
+    --border:#e0ded8;
+    --bg:#ffffff;
+    --bg2:#F8F7F4;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .logo-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
+  .logo-text{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:13px;color:var(--text-muted);text-decoration:none;transition:color 0.15s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{font-size:13px;padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;text-decoration:none;font-weight:500;transition:background 0.15s}
+  .nav-cta:hover{background:var(--accent-hover)}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:4px 0;transition:0.2s}
+
+  /* HERO */
+  .hero{min-height:100vh;background:var(--dark2);display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:0;position:relative;overflow:hidden}
+  .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--dark3) 1px,transparent 1px),linear-gradient(90deg,var(--dark3) 1px,transparent 1px);background-size:60px 60px;opacity:0.25}
+  .hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:120px 24px 80px}
+  .hero-eyebrow{font-size:11px;letter-spacing:0.12em;color:var(--text-hint);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+  .hero-eyebrow::before{content:'';display:block;width:32px;height:2px;background:var(--accent)}
+  .hero h1{font-size:clamp(36px,6vw,68px);font-weight:700;color:#F1EFE8;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px}
+  .hero h1 span{color:var(--accent)}
+  .hero-sub{font-size:16px;color:var(--text-hint);line-height:1.7;max-width:480px;margin-bottom:40px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn-primary{font-size:14px;padding:12px 24px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.15s}
+  .btn-primary:hover{background:var(--accent-hover)}
+  .btn-ghost{font-size:14px;padding:12px 24px;background:transparent;color:#B4B2A9;border:1px solid #444441;border-radius:7px;cursor:pointer;font-weight:500;text-decoration:none;transition:border-color 0.15s,color 0.15s}
+  .btn-ghost:hover{border-color:#888780;color:#F1EFE8}
+  .hero-stats{position:relative;z-index:1;background:var(--dark);border-top:1px solid var(--dark3);display:flex}
+  .hero-stat{flex:1;padding:24px;border-right:1px solid var(--dark3);text-align:center}
+  .hero-stat:last-child{border-right:none}
+  .hero-stat-num{font-size:28px;font-weight:700;color:var(--accent)}
+  .hero-stat-label{font-size:11px;color:var(--text-hint);margin-top:3px;letter-spacing:0.03em}
+
+  /* SECTIONS */
+  section{padding:80px 0}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+  .section-eyebrow{font-size:11px;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;font-weight:600}
+  .section-title{font-size:clamp(26px,4vw,36px);font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:10px}
+  .section-sub{font-size:15px;color:var(--text-muted);line-height:1.7;max-width:520px}
+
+  /* OBRAS */
+  #obras{background:var(--bg2)}
+  .obras-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .chip{font-size:12px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;transition:all 0.15s;font-weight:500}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.active{background:var(--accent-light);color:var(--accent);border-color:#F0997B;font-weight:600}
+  .obras-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+  .obra-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;cursor:pointer}
+  .obra-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+  .obra-thumb{height:180px;background:var(--dark2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .obra-thumb img{width:100%;height:100%;object-fit:cover}
+  .obra-thumb-placeholder{font-size:40px;opacity:0.3;color:var(--cream)}
+  .obra-badge{position:absolute;top:10px;left:10px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+  .badge-ok{background:#EAF3DE;color:#3B6D11}
+  .badge-wip{background:#FAEEDA;color:#854F0B}
+  .obra-type-badge{position:absolute;top:10px;right:10px;font-size:10px;padding:3px 9px;border-radius:20px;background:rgba(0,0,0,0.45);color:#fff;font-weight:500}
+  .obra-body{padding:16px}
+  .obra-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .obra-meta{font-size:12px;color:var(--text-hint)}
+  .obra-desc{font-size:13px;color:var(--text-muted);margin-top:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .obras-empty{grid-column:1/-1;text-align:center;padding:48px;color:var(--text-hint);font-size:14px}
+
+  /* HISTORIA */
+  #historia{background:var(--bg)}
+  .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:48px}
+  .timeline{display:flex;flex-direction:column;gap:0}
+  .tl-item{display:flex;gap:20px;padding-bottom:32px;position:relative}
+  .tl-item:not(:last-child)::after{content:'';position:absolute;left:19px;top:40px;bottom:0;width:1px;background:var(--border)}
+  .tl-circle{width:40px;height:40px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent);border:2px solid #F0997B;z-index:1}
+  .tl-text{}
+  .tl-year{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+  .tl-desc{font-size:14px;color:var(--text-muted);line-height:1.6}
+  .tl-photo{margin-top:10px;height:80px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--accent);font-weight:500}
+  .historia-right{}
+  .team-intro{font-size:15px;color:var(--text-muted);line-height:1.7;margin-bottom:28px}
+  .team-cards{display:flex;flex-direction:column;gap:14px}
+  .team-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px}
+  .team-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+  .av-em{background:var(--accent-light);color:var(--accent)}
+  .av-sl{background:#E1F5EE;color:#0F6E56}
+  .team-name{font-size:14px;font-weight:600;color:var(--text)}
+  .team-role{font-size:12px;color:var(--text-hint);margin-top:2px}
+  .historia-quote{margin-top:24px;padding:20px 22px;background:var(--dark2);border-radius:10px;border-left:3px solid var(--accent)}
+  .historia-quote p{font-size:14px;color:#B4B2A9;line-height:1.7;font-style:italic}
+  .historia-quote span{font-size:12px;color:var(--text-hint);margin-top:8px;display:block}
+
+  /* CONTACTO */
+  #contacto{background:var(--dark2)}
+  #contacto .section-eyebrow{color:#F0997B}
+  #contacto .section-title{color:#F1EFE8}
+  #contacto .section-sub{color:#888780}
+  .contacto-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:40px}
+  .contacto-info{display:flex;flex-direction:column;gap:16px}
+  .contacto-item{display:flex;align-items:center;gap:14px}
+  .contacto-icon{width:40px;height:40px;border-radius:8px;background:rgba(216,90,48,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .contacto-label{font-size:11px;color:var(--text-hint);margin-bottom:2px}
+  .contacto-val{font-size:14px;color:#D3D1C7;font-weight:500}
+  .contacto-btns{display:flex;flex-direction:column;gap:12px}
+  .btn-wa{font-size:15px;padding:16px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.15s}
+  .btn-wa:hover{background:var(--accent-hover)}
+  .btn-mail{font-size:15px;padding:16px 24px;background:transparent;color:#D3D1C7;border:1px solid var(--dark3);border-radius:8px;cursor:pointer;font-weight:500;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color 0.15s}
+  .btn-mail:hover{border-color:#888780}
+
+  /* FOOTER */
+  footer{background:var(--dark);border-top:1px solid var(--dark3);padding:24px;text-align:center}
+  footer p{font-size:12px;color:var(--text-hint)}
+  footer a{color:var(--accent);text-decoration:none}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--bg);border-radius:14px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto}
+  .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+  .modal-title{font-size:18px;font-weight:700;color:var(--text)}
+  .modal-meta{font-size:12px;color:var(--text-hint);margin-top:3px}
+  .modal-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-hint);line-height:1;padding:4px}
+  .modal-body{padding:20px 24px 24px}
+  .modal-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+  .modal-foto{height:120px;border-radius:8px;background:var(--bg2);overflow:hidden}
+  .modal-foto img{width:100%;height:100%;object-fit:cover}
+  .modal-foto-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--cream2)}
+  .modal-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+  .modal-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .modal-tag{font-size:12px;padding:4px 12px;border-radius:20px;background:var(--bg2);color:var(--text-muted);border:1px solid var(--border)}
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:block}
+    .hero h1{font-size:36px}
+    .hero-stats{flex-wrap:wrap}
+    .hero-stat{min-width:50%;border-right:none;border-top:1px solid var(--dark3)}
+    .historia-grid{grid-template-columns:1fr}
+    .contacto-grid{grid-template-columns:1fr}
+    section{padding:56px 0}
+  }
+  @media(max-width:480px){
+    .obras-grid{grid-template-columns:1fr}
+    .modal-fotos{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <div class="logo-dot"></div>
+      <span class="logo-text">Nuestra Casa S.A.</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#obras">Obras</a></li>
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta">Contactanos</a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Chivilcoy, Buenos Aires</p>
+    <h1>Más de 30 años<br>construyendo <span>tu hogar.</span></h1>
+    <p class="hero-sub">Casas, edificios y reformas con experiencia, equipo y el compromiso de siempre en cada obra.</p>
+    <div class="hero-actions">
+      <a href="#obras" class="btn-primary">Ver obras</a>
+      <a href="#historia" class="btn-ghost">Nuestra historia</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">+30</div>
+      <div class="hero-stat-label">Años de trayectoria</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">+200</div>
+      <div class="hero-stat-label">Obras realizadas</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Compromiso en cada proyecto</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">2</div>
+      <div class="hero-stat-label">Socios fundadores</div>
+    </div>
+  </div>
+</section>
+
+<!-- OBRAS -->
+<section id="obras">
+  <div class="container">
+    <div class="obras-header">
+      <div>
+        <p class="section-eyebrow">Portfolio</p>
+        <h2 class="section-title">Nuestras obras</h2>
+        <p class="section-sub">Cada proyecto es único. Acá vas a encontrar una muestra de todo lo que construimos.</p>
+      </div>
+    </div>
+    <div class="filters" id="filters">
+      <span class="chip active" data-filter="all">Todas</span>
+      <span class="chip" data-filter="Casa">Casas</span>
+      <span class="chip" data-filter="Edificio">Edificios</span>
+      <span class="chip" data-filter="Reforma">Reformas</span>
+      <span class="chip" data-filter="Local">Locales</span>
+      <span class="chip" data-filter="En curso">En curso</span>
+    </div>
+    <div class="obras-grid" id="obras-grid">
+      <div class="obras-empty">Cargando obras...</div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORIA -->
+<section id="historia">
+  <div class="container">
+    <p class="section-eyebrow">Quiénes somos</p>
+    <h2 class="section-title">30 años construyendo</h2>
+    <div class="historia-grid">
+      <div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-circle">90</div>
+            <div class="tl-text">
+              <p class="tl-year">1990 — Fundación</p>
+              <p class="tl-desc">El Ing. Mandalunis y el Arq. Lelutre dan inicio al estudio. Primera obra residencial en el centro de Chivilcoy.</p>
+              <div class="tl-photo">📷 foto de época</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-circle">00</div>
+            <div class="tl-text">
+              <p class="tl-year">2000s — Crecimiento</p>
+              <p class="tl-desc">Primer edificio de departamentos. Crecimiento sostenido con proyectos de mayor escala en toda la región.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-circle" style="background:#EAF3DE;color:#3B6D11;border-color:#97C459">Hoy</div>
+            <div class="tl-text">
+              <p class="tl-year">Hoy — Más de 200 obras</p>
+              <p class="tl-desc">El mismo equipo fundador, la misma dedicación. Cada obra nueva es un proyecto que nos apasiona.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="historia-right">
+        <p class="team-intro">Dos profesionales con más de tres décadas de trabajo conjunto. Cada proyecto lleva su firma, su criterio y su compromiso personal.</p>
+        <div class="team-cards">
+          <div class="team-card">
+            <div class="team-avatar av-em">EM</div>
+            <div>
+              <p class="team-name">Ing. Eduardo R. Mandalunis</p>
+              <p class="team-role">Socio fundador · Ingeniería</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar av-sl">SL</div>
+            <div>
+              <p class="team-name">Arq. Silvio A. Lelutre</p>
+              <p class="team-role">Socio fundador · Arquitectura</p>
+            </div>
+          </div>
+        </div>
+        <div class="historia-quote">
+          <p>"Cada casa que construimos es el sueño de alguien. Eso es lo que nos mueve desde el primer día."</p>
+          <span>— Nuestra Casa S.A., Chivilcoy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <p class="section-eyebrow">Contacto</p>
+    <h2 class="section-title">¿Tenés un proyecto?</h2>
+    <p class="section-sub">Hablemos. Estamos en Chivilcoy y nos encanta escuchar ideas nuevas.</p>
+    <div class="contacto-grid">
+      <div class="contacto-info">
+        <div class="contacto-item">
+          <div class="contacto-icon">📍</div>
+          <div>
+            <p class="contacto-label">Dirección</p>
+            <p class="contacto-val">Av. Sarmiento 174 / Villarino 264, Chivilcoy</p>
+          </div>
+        </div>
+        <div class="contacto-item">
+          <div class="contacto-icon">📞</div>
+          <div>
+            <p class="contacto-label">Teléfono</p>
+            <p class="contacto-val">+54 2346 42-2450</p>
+          </div>
+        </div>
+        <div class="contacto-item">
+          <div class="contacto-icon">📧</div>
+          <div>
+            <p class="contacto-label">Email</p>
+            <p class="contacto-val">estudio@mlarq.com.ar</p>
+          </div>
+        </div>
+        <div class="contacto-item">
+          <div class="contacto-icon">📸</div>
+          <div>
+            <p class="contacto-label">Instagram</p>
+            <p class="contacto-val">@nuestracasa_s.a</p>
+          </div>
+        </div>
+      </div>
+      <div class="contacto-btns">
+        <a href="https://wa.me/5492346422450" target="_blank" class="btn-wa">
+          💬 Escribinos por WhatsApp
+        </a>
+        <a href="mailto:estudio@mlarq.com.ar" class="btn-mail">
+          ✉️ Mandarnos un mail
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Nuestra Casa S.A. · Chivilcoy, Buenos Aires · <a href="https://instagram.com/nuestracasa_s.a" target="_blank">@nuestracasa_s.a</a></p>
+</footer>
+
+<!-- MODAL OBRA -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <div class="modal-header">
+      <div>
+        <p class="modal-title" id="modal-nombre">—</p>
+        <p class="modal-meta" id="modal-meta">—</p>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-fotos" id="modal-fotos"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-tags" id="modal-tags"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPA_URL = 'https://tsumgbkhsmajqiojqxny.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzdW1nYmtoc21hanFpb2pxeG55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NzE4MzIsImV4cCI6MjA5NTA0NzgzMn0.daKyMfNdZ92PCYt9OkHg-vqbqrFrIt6FzlGQeQ9xXs0';
+const TIPO_ICON = {Casa:'🏠',Edificio:'🏢',Reforma:'🔨',Local:'🏪'};
+
+let allObras = [];
+let activeFilter = 'all';
+
+async function fetchObras() {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/obras?visible=eq.true&order=anio.desc`, {
+      headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}
+    });
+    allObras = await res.json();
+    renderObras(allObras);
+  } catch(e) {
+    document.getElementById('obras-grid').innerHTML = '<div class="obras-empty">No se pudieron cargar las obras.</div>';
+  }
+}
+
+function renderObras(obras) {
+  const grid = document.getElementById('obras-grid');
+  if (!obras.length) {
+    grid.innerHTML = '<div class="obras-empty">No hay obras en esta categoría todavía.</div>';
+    return;
+  }
+  grid.innerHTML = obras.map(o => `
+    <div class="obra-card" onclick="openModal('${o.id}')">
+      <div class="obra-thumb">
+        ${o.portada_url
+          ? `<img src="${o.portada_url}" alt="${o.nombre}" loading="lazy">`
+          : `<div class="obra-thumb-placeholder">${TIPO_ICON[o.tipo] || '🏗️'}</div>`}
+        <span class="obra-badge ${o.estado === 'Terminada' ? 'badge-ok' : 'badge-wip'}">${o.estado}</span>
+        <span class="obra-type-badge">${o.tipo}</span>
+      </div>
+      <div class="obra-body">
+        <p class="obra-name">${o.nombre}</p>
+        <p class="obra-meta">Chivilcoy${o.anio ? ' · ' + o.anio : ''}</p>
+        ${o.descripcion ? `<p class="obra-desc">${o.descripcion}</p>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterObras(filter) {
+  activeFilter = filter;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+  if (filter === 'all') return renderObras(allObras);
+  if (filter === 'En curso') return renderObras(allObras.filter(o => o.estado === 'En curso'));
+  renderObras(allObras.filter(o => o.tipo === filter));
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (chip) filterObras(chip.dataset.filter);
+});
+
+async function openModal(id) {
+  const obra = allObras.find(o => o.id === id);
+  if (!obra) return;
+  document.getElementById('modal-nombre').textContent = obra.nombre;
+  document.getElementById('modal-meta').textContent = `${obra.tipo} · ${obra.estado}${obra.anio ? ' · ' + obra.anio : ''} · Chivilcoy`;
+  document.getElementById('modal-desc').textContent = obra.descripcion || '';
+
+  const fotosRes = await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}&order=orden`, {
+    headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}
+  });
+  const fotos = await fotosRes.json();
+
+  const fotoSlots = fotos.length
+    ? fotos.map(f => `<div class="modal-foto"><img src="${f.foto_url}" alt="foto" loading="lazy"></div>`).join('')
+    : `<div class="modal-foto"><div class="modal-foto-placeholder">${TIPO_ICON[obra.tipo] || '🏗️'}</div></div>`;
+  document.getElementById('modal-fotos').innerHTML = fotoSlots;
+
+  document.getElementById('modal-tags').innerHTML = [obra.tipo, obra.estado, obra.anio ? obra.anio : null]
+    .filter(Boolean).map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modal') closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  const cta = document.querySelector('.nav-cta');
+  if (links.style.display === 'flex') {
+    links.style.display = '';
+    cta.style.display = '';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:#fff;padding:16px 24px;border-bottom:1px solid var(--border);gap:16px';
+    cta.style.cssText = 'display:block;margin:0 24px 16px;text-align:center;position:absolute;top:180px;left:0;right:0';
+  }
+}
+
+fetchObras();
+</script>
+</body>
+</html>
