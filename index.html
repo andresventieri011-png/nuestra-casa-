@@ -7,9 +7,13 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --accent:#D85A30;
-    --accent-hover:#993C1D;
-    --accent-light:#FAECE7;
+    --accent:#1A1A18;
+    --accent-hover:#000000;
+    --accent-light:#E9E9E6;
+    --on-dark:#F1EFE8;
+    --on-dark-hover:#D3D1C7;
+    --on-dark-soft:rgba(255,255,255,0.08);
+    --on-dark-border:#D3D1C7;
     --dark:#1e1e1c;
     --dark2:#2C2C2A;
     --dark3:#444441;
@@ -20,7 +24,7 @@
     --text-hint:#888780;
     --border:#e0ded8;
     --bg:#ffffff;
-    --bg2:#F8F7F4;
+    --bg2:#F0F0EE;
   }
   html{scroll-behavior:smooth}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
@@ -44,19 +48,19 @@
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--dark3) 1px,transparent 1px),linear-gradient(90deg,var(--dark3) 1px,transparent 1px);background-size:60px 60px;opacity:0.25}
   .hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:120px 24px 80px}
   .hero-eyebrow{font-size:11px;letter-spacing:0.12em;color:var(--text-hint);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-  .hero-eyebrow::before{content:'';display:block;width:32px;height:2px;background:var(--accent)}
+  .hero-eyebrow::before{content:'';display:block;width:32px;height:2px;background:var(--on-dark)}
   .hero h1{font-size:clamp(36px,6vw,68px);font-weight:700;color:#F1EFE8;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px}
-  .hero h1 span{color:var(--accent)}
+  .hero h1 span{color:var(--on-dark);text-decoration:underline;text-decoration-color:var(--on-dark-hover);text-underline-offset:6px}
   .hero-sub{font-size:16px;color:var(--text-hint);line-height:1.7;max-width:480px;margin-bottom:40px}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-  .btn-primary{font-size:14px;padding:12px 24px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.15s}
-  .btn-primary:hover{background:var(--accent-hover)}
+  .btn-primary{font-size:14px;padding:12px 24px;background:var(--on-dark);color:var(--dark);border:none;border-radius:7px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.15s}
+  .btn-primary:hover{background:var(--on-dark-hover)}
   .btn-ghost{font-size:14px;padding:12px 24px;background:transparent;color:#B4B2A9;border:1px solid #444441;border-radius:7px;cursor:pointer;font-weight:500;text-decoration:none;transition:border-color 0.15s,color 0.15s}
   .btn-ghost:hover{border-color:#888780;color:#F1EFE8}
   .hero-stats{position:relative;z-index:1;background:var(--dark);border-top:1px solid var(--dark3);display:flex}
   .hero-stat{flex:1;padding:24px;border-right:1px solid var(--dark3);text-align:center}
   .hero-stat:last-child{border-right:none}
-  .hero-stat-num{font-size:28px;font-weight:700;color:var(--accent)}
+  .hero-stat-num{font-size:28px;font-weight:700;color:var(--on-dark)}
   .hero-stat-label{font-size:11px;color:var(--text-hint);margin-top:3px;letter-spacing:0.03em}
 
   /* SECTIONS */
@@ -72,7 +76,7 @@
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
   .chip{font-size:12px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;transition:all 0.15s;font-weight:500}
   .chip:hover{border-color:var(--accent);color:var(--accent)}
-  .chip.active{background:var(--accent-light);color:var(--accent);border-color:#F0997B;font-weight:600}
+  .chip.active{background:var(--accent-light);color:var(--accent);border-color:var(--cream2);font-weight:600}
   .obras-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
   .obra-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;cursor:pointer}
   .obra-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,0.08)}
@@ -95,7 +99,7 @@
   .timeline{display:flex;flex-direction:column;gap:0}
   .tl-item{display:flex;gap:20px;padding-bottom:32px;position:relative}
   .tl-item:not(:last-child)::after{content:'';position:absolute;left:19px;top:40px;bottom:0;width:1px;background:var(--border)}
-  .tl-circle{width:40px;height:40px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent);border:2px solid #F0997B;z-index:1}
+  .tl-circle{width:40px;height:40px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent);border:2px solid var(--cream2);z-index:1}
   .tl-text{}
   .tl-year{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
   .tl-desc{font-size:14px;color:var(--text-muted);line-height:1.6}
@@ -106,34 +110,34 @@
   .team-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px}
   .team-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
   .av-em{background:var(--accent-light);color:var(--accent)}
-  .av-sl{background:#E1F5EE;color:#0F6E56}
+  .av-sl{background:#DBDAD5;color:#3A3A36}
   .team-name{font-size:14px;font-weight:600;color:var(--text)}
   .team-role{font-size:12px;color:var(--text-hint);margin-top:2px}
-  .historia-quote{margin-top:24px;padding:20px 22px;background:var(--dark2);border-radius:10px;border-left:3px solid var(--accent)}
+  .historia-quote{margin-top:24px;padding:20px 22px;background:var(--dark2);border-radius:10px;border-left:3px solid var(--on-dark)}
   .historia-quote p{font-size:14px;color:#B4B2A9;line-height:1.7;font-style:italic}
   .historia-quote span{font-size:12px;color:var(--text-hint);margin-top:8px;display:block}
 
   /* CONTACTO */
   #contacto{background:var(--dark2)}
-  #contacto .section-eyebrow{color:#F0997B}
+  #contacto .section-eyebrow{color:var(--on-dark)}
   #contacto .section-title{color:#F1EFE8}
   #contacto .section-sub{color:#888780}
   .contacto-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:40px}
   .contacto-info{display:flex;flex-direction:column;gap:16px}
   .contacto-item{display:flex;align-items:center;gap:14px}
-  .contacto-icon{width:40px;height:40px;border-radius:8px;background:rgba(216,90,48,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .contacto-icon{width:40px;height:40px;border-radius:8px;background:var(--on-dark-soft);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
   .contacto-label{font-size:11px;color:var(--text-hint);margin-bottom:2px}
   .contacto-val{font-size:14px;color:#D3D1C7;font-weight:500}
   .contacto-btns{display:flex;flex-direction:column;gap:12px}
-  .btn-wa{font-size:15px;padding:16px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.15s}
-  .btn-wa:hover{background:var(--accent-hover)}
+  .btn-wa{font-size:15px;padding:16px 24px;background:var(--on-dark);color:var(--dark);border:none;border-radius:8px;cursor:pointer;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.15s}
+  .btn-wa:hover{background:var(--on-dark-hover)}
   .btn-mail{font-size:15px;padding:16px 24px;background:transparent;color:#D3D1C7;border:1px solid var(--dark3);border-radius:8px;cursor:pointer;font-weight:500;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color 0.15s}
   .btn-mail:hover{border-color:#888780}
 
   /* FOOTER */
   footer{background:var(--dark);border-top:1px solid var(--dark3);padding:24px;text-align:center}
   footer p{font-size:12px;color:var(--text-hint)}
-  footer a{color:var(--accent);text-decoration:none}
+  footer a{color:var(--on-dark);text-decoration:none}
 
   /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
@@ -179,8 +183,8 @@
       <span class="logo-text">Nuestra Casa S.A.</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#obras">Obras</a></li>
       <li><a href="#historia">Historia</a></li>
+      <li><a href="#obras">Obras</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <a href="#contacto" class="nav-cta">Contactanos</a>
@@ -204,20 +208,43 @@
   </div>
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-num">+30</div>
+      <div class="hero-stat-num" id="stat-anios">+30</div>
       <div class="hero-stat-label">Años de trayectoria</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">+200</div>
+      <div class="hero-stat-num" id="stat-obras">+200</div>
       <div class="hero-stat-label">Obras realizadas</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-num" id="stat-comp">100%</div>
       <div class="hero-stat-label">Compromiso en cada proyecto</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">2</div>
+      <div class="hero-stat-num" id="stat-socios">2</div>
       <div class="hero-stat-label">Socios fundadores</div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORIA -->
+<section id="historia">
+  <div class="container">
+    <p class="section-eyebrow">Quiénes somos</p>
+    <h2 class="section-title" id="historia-titulo">30 años construyendo</h2>
+    <div class="historia-grid">
+      <div>
+        <div class="timeline" id="timeline-container">
+          <div class="tl-item"><div class="tl-circle">…</div><div class="tl-text"><p class="tl-desc">Cargando...</p></div></div>
+        </div>
+      </div>
+      <div class="historia-right">
+        <p class="team-intro">Dos profesionales con más de tres décadas de trabajo conjunto. Cada proyecto lleva su firma, su criterio y su compromiso personal.</p>
+        <div class="team-cards" id="team-cards-container"></div>
+        <div class="historia-quote" id="quote-container">
+          <p id="quote-texto">"Cargando..."</p>
+          <span id="quote-autor"></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -246,65 +273,6 @@
   </div>
 </section>
 
-<!-- HISTORIA -->
-<section id="historia">
-  <div class="container">
-    <p class="section-eyebrow">Quiénes somos</p>
-    <h2 class="section-title">30 años construyendo</h2>
-    <div class="historia-grid">
-      <div>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-circle">90</div>
-            <div class="tl-text">
-              <p class="tl-year">1990 — Fundación</p>
-              <p class="tl-desc">El Ing. Mandalunis y el Arq. Lelutre dan inicio al estudio. Primera obra residencial en el centro de Chivilcoy.</p>
-              <div class="tl-photo">📷 foto de época</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-circle">00</div>
-            <div class="tl-text">
-              <p class="tl-year">2000s — Crecimiento</p>
-              <p class="tl-desc">Primer edificio de departamentos. Crecimiento sostenido con proyectos de mayor escala en toda la región.</p>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-circle" style="background:#EAF3DE;color:#3B6D11;border-color:#97C459">Hoy</div>
-            <div class="tl-text">
-              <p class="tl-year">Hoy — Más de 200 obras</p>
-              <p class="tl-desc">El mismo equipo fundador, la misma dedicación. Cada obra nueva es un proyecto que nos apasiona.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="historia-right">
-        <p class="team-intro">Dos profesionales con más de tres décadas de trabajo conjunto. Cada proyecto lleva su firma, su criterio y su compromiso personal.</p>
-        <div class="team-cards">
-          <div class="team-card">
-            <div class="team-avatar av-em">EM</div>
-            <div>
-              <p class="team-name">Ing. Eduardo R. Mandalunis</p>
-              <p class="team-role">Socio fundador · Ingeniería</p>
-            </div>
-          </div>
-          <div class="team-card">
-            <div class="team-avatar av-sl">SL</div>
-            <div>
-              <p class="team-name">Arq. Silvio A. Lelutre</p>
-              <p class="team-role">Socio fundador · Arquitectura</p>
-            </div>
-          </div>
-        </div>
-        <div class="historia-quote">
-          <p>"Cada casa que construimos es el sueño de alguien. Eso es lo que nos mueve desde el primer día."</p>
-          <span>— Nuestra Casa S.A., Chivilcoy</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACTO -->
 <section id="contacto">
   <div class="container">
@@ -317,36 +285,36 @@
           <div class="contacto-icon">📍</div>
           <div>
             <p class="contacto-label">Dirección</p>
-            <p class="contacto-val">Av. Sarmiento 174 / Villarino 264, Chivilcoy</p>
+            <p class="contacto-val" id="cont-dir">Av. Sarmiento 174 / Villarino 264, Chivilcoy</p>
           </div>
         </div>
         <div class="contacto-item">
           <div class="contacto-icon">📞</div>
           <div>
             <p class="contacto-label">Teléfono</p>
-            <p class="contacto-val">+54 2346 42-2450</p>
+            <p class="contacto-val" id="cont-tel-val">+54 2346 42-2450</p>
           </div>
         </div>
         <div class="contacto-item">
           <div class="contacto-icon">📧</div>
           <div>
             <p class="contacto-label">Email</p>
-            <p class="contacto-val">estudio@mlarq.com.ar</p>
+            <p class="contacto-val" id="cont-email-val">estudio@mlarq.com.ar</p>
           </div>
         </div>
         <div class="contacto-item">
           <div class="contacto-icon">📸</div>
           <div>
             <p class="contacto-label">Instagram</p>
-            <p class="contacto-val">@nuestracasa_s.a</p>
+            <p class="contacto-val" id="cont-ig-val">@nuestracasa_s.a</p>
           </div>
         </div>
       </div>
       <div class="contacto-btns">
-        <a href="https://wa.me/5492346422450" target="_blank" class="btn-wa">
+        <a id="btn-wa-link" href="https://wa.me/5492346422450" target="_blank" class="btn-wa">
           💬 Escribinos por WhatsApp
         </a>
-        <a href="mailto:estudio@mlarq.com.ar" class="btn-mail">
+        <a id="btn-mail-link" href="mailto:estudio@mlarq.com.ar" class="btn-mail">
           ✉️ Mandarnos un mail
         </a>
       </div>
@@ -480,6 +448,83 @@ function toggleMenu() {
 }
 
 fetchObras();
+fetchConfig();
+fetchHistoria();
+
+async function fetchConfig() {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/config`, {headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}});
+    const rows = await res.json();
+    const cfg = {};
+    rows.forEach(r => { try { cfg[r.key] = JSON.parse(r.value); } catch(e) { cfg[r.key] = r.value; } });
+
+    // Stats
+    if (cfg.site_stats) {
+      const s = cfg.site_stats;
+      if (s.anios) document.getElementById('stat-anios').textContent = s.anios;
+      if (s.obras) document.getElementById('stat-obras').textContent = s.obras;
+      if (s.compromiso) document.getElementById('stat-comp').textContent = s.compromiso;
+      if (s.socios) document.getElementById('stat-socios').textContent = s.socios;
+    }
+
+    // Contacto
+    if (cfg.contacto) {
+      const c = cfg.contacto;
+      if (c.direccion) document.getElementById('cont-dir').textContent = c.direccion;
+      if (c.telefono) document.getElementById('cont-tel-val').textContent = c.telefono;
+      if (c.email) {
+        document.getElementById('cont-email-val').textContent = c.email;
+        document.getElementById('btn-mail-link').href = 'mailto:' + c.email;
+      }
+      if (c.instagram) document.getElementById('cont-ig-val').textContent = '@' + c.instagram;
+      if (c.whatsapp) document.getElementById('btn-wa-link').href = 'https://wa.me/' + c.whatsapp;
+    }
+
+    // Quote
+    if (cfg.quote) {
+      if (cfg.quote.texto) document.getElementById('quote-texto').textContent = '"' + cfg.quote.texto + '"';
+      if (cfg.quote.autor) document.getElementById('quote-autor').textContent = '— ' + cfg.quote.autor;
+    }
+
+    // Equipo
+    if (cfg.equipo) {
+      const equipo = Array.isArray(cfg.equipo) ? cfg.equipo : JSON.parse(cfg.equipo);
+      const avatarColors = ['av-em','av-sl','av-c3','av-c4'];
+      document.getElementById('team-cards-container').innerHTML = equipo.map((m, i) => `
+        <div class="team-card">
+          <div class="team-avatar ${avatarColors[i % avatarColors.length]}">${m.iniciales || m.nombre.slice(0,2).toUpperCase()}</div>
+          <div>
+            <p class="team-name">${m.nombre}</p>
+            <p class="team-role">${m.rol}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) { console.warn('Config no disponible', e); }
+}
+
+async function fetchHistoria() {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/historia_items?order=orden`, {headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}});
+    const items = await res.json();
+    if (!items.length) return;
+    const container = document.getElementById('timeline-container');
+    container.innerHTML = items.map((h, i) => {
+      const isLast = i === items.length - 1;
+      const circleStyle = isLast ? 'style="background:#EAF3DE;color:#3B6D11;border-color:#97C459"' : '';
+      const circleLabel = h.anio.length <= 4 ? h.anio.slice(-2) : h.anio.slice(0,3);
+      return `
+        <div class="tl-item">
+          <div class="tl-circle" ${circleStyle}>${circleLabel}</div>
+          <div class="tl-text">
+            <p class="tl-year">${h.anio} — ${h.titulo}</p>
+            ${h.descripcion ? `<p class="tl-desc">${h.descripcion}</p>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) { console.warn('Historia no disponible', e); }
+}
 </script>
 </body>
 </html>

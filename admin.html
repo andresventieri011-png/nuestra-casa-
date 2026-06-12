@@ -7,7 +7,7 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --accent:#D85A30;--accent-hover:#993C1D;--accent-light:#FAECE7;
+    --accent:#1A1A18;--accent-hover:#000000;--accent-light:#E9E9E6;
     --dark:#1e1e1c;--dark2:#2C2C2A;--dark3:#444441;
     --text:#1e1e1c;--text-muted:#5F5E5A;--text-hint:#888780;
     --border:#e0ded8;--bg:#ffffff;--bg2:#F8F7F4;
@@ -34,22 +34,37 @@
   .admin-logo{display:flex;align-items:center;gap:8px}
   .admin-logo span{font-size:14px;font-weight:600;color:#F1EFE8}
   .admin-logo .logo-dot{background:var(--accent)}
-  .admin-badge{font-size:11px;padding:3px 9px;background:rgba(216,90,48,0.2);color:#F0997B;border-radius:20px;font-weight:600}
+  .admin-badge{font-size:11px;padding:3px 9px;background:rgba(255,255,255,0.12);color:#D3D1C7;border-radius:20px;font-weight:600}
   .header-right{display:flex;align-items:center;gap:12px}
   .btn-site{font-size:12px;padding:6px 14px;background:transparent;color:#888780;border:1px solid var(--dark3);border-radius:6px;cursor:pointer;text-decoration:none;font-family:inherit}
   .btn-logout{font-size:12px;padding:6px 14px;background:transparent;color:#888780;border:none;cursor:pointer;font-family:inherit}
 
+  /* TABS */
+  .tab-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:0}
+  .tab-btn{font-size:13px;font-weight:600;padding:14px 20px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:var(--text-hint);font-family:inherit;transition:all 0.15s}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab-btn:hover:not(.active){color:var(--text-muted)}
+
+  /* MAIN CONTENT */
   .admin-main{max-width:1000px;margin:0 auto;padding:32px 24px}
-  .admin-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-  .admin-top h1{font-size:22px;font-weight:700;color:var(--text)}
+  .tab-pane{display:none}
+  .tab-pane.active{display:block}
+
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+  .section-head h2{font-size:20px;font-weight:700;color:var(--text)}
+  .section-head p{font-size:13px;color:var(--text-muted);margin-top:3px}
+
   .btn-add{font-size:13px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:7px}
   .btn-add:hover{background:var(--accent-hover)}
+  .btn-save-inline{font-size:13px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-family:inherit}
+  .btn-save-inline:hover{background:var(--accent-hover)}
+  .btn-save-inline:disabled{opacity:0.6;cursor:not-allowed}
 
-  /* TABLA */
+  /* TABLA OBRAS */
   .obras-table{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-  .table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;gap:0;padding:12px 20px;background:var(--bg2);border-bottom:1px solid var(--border)}
+  .table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:12px 20px;background:var(--bg2);border-bottom:1px solid var(--border)}
   .th{font-size:11px;font-weight:600;color:var(--text-hint);letter-spacing:0.06em;text-transform:uppercase}
-  .obra-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;gap:0;padding:14px 20px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.1s}
+  .obra-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:14px 20px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.1s}
   .obra-row:last-child{border-bottom:none}
   .obra-row:hover{background:var(--bg2)}
   .obra-row-name{font-size:14px;font-weight:600;color:var(--text)}
@@ -66,7 +81,7 @@
   .table-empty{padding:48px;text-align:center;color:var(--text-hint);font-size:14px}
   .table-loading{padding:32px;text-align:center;color:var(--text-hint);font-size:13px}
 
-  /* MODAL FORM */
+  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
   .modal-overlay.open{opacity:1;pointer-events:all}
   .modal{background:var(--bg);border-radius:14px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
@@ -74,6 +89,7 @@
   .modal-title{font-size:16px;font-weight:700;color:var(--text)}
   .modal-close-btn{background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-hint);padding:4px;line-height:1}
   .modal-body{padding:22px 24px 24px}
+  .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--bg)}
 
   .form-group{margin-bottom:18px}
   .form-label{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;display:block;letter-spacing:0.03em}
@@ -82,29 +98,48 @@
   .form-textarea{min-height:80px;resize:vertical}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-  /* FOTO UPLOAD */
+  /* FOTOS */
   .fotos-label{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:8px;display:block;letter-spacing:0.03em}
-  .fotos-drop{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color 0.15s;margin-bottom:10px}
-  .fotos-drop:hover{border-color:var(--accent)}
-  .fotos-drop p{font-size:13px;color:var(--text-hint)}
-  .fotos-drop span{font-size:12px;color:var(--accent);font-weight:600}
   .fotos-preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
   .foto-preview-item{position:relative;width:72px;height:72px;border-radius:7px;overflow:hidden;border:1px solid var(--border)}
   .foto-preview-item img{width:100%;height:100%;object-fit:cover}
   .foto-remove{position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .fotos-existing{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-
-  /* URL input alternativa */
   .url-input-wrap{display:flex;gap:8px}
   .url-input-wrap input{flex:1}
   .btn-add-url{font-size:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--text-muted);font-family:inherit;white-space:nowrap}
   .btn-add-url:hover{border-color:var(--accent);color:var(--accent)}
 
-  .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--bg)}
   .btn-cancel{font-size:13px;padding:10px 18px;background:transparent;border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--text-muted);font-family:inherit}
   .btn-save{font-size:13px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-family:inherit}
   .btn-save:hover{background:var(--accent-hover)}
   .btn-save:disabled{opacity:0.6;cursor:not-allowed}
+
+  /* HISTORIA TAB */
+  .card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px}
+  .card-title{font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text)}
+  .card-sub{font-size:13px;color:var(--text-hint);margin-bottom:20px}
+
+  .historia-list{display:flex;flex-direction:column;gap:10px}
+  .historia-item-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--bg2)}
+  .historia-item-year{font-size:13px;font-weight:700;color:var(--accent);min-width:44px}
+  .historia-item-info{flex:1}
+  .historia-item-title{font-size:14px;font-weight:600;color:var(--text)}
+  .historia-item-desc{font-size:12px;color:var(--text-hint);margin-top:2px}
+  .historia-item-actions{display:flex;gap:6px;flex-shrink:0}
+
+  /* EQUIPO */
+  .team-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+  .team-member-row{display:grid;grid-template-columns:1fr 1fr 80px 80px;gap:10px;align-items:end}
+  .team-member-row .form-group{margin-bottom:0}
+  .btn-del-team{font-size:12px;padding:9px 12px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);border-radius:5px;cursor:pointer;font-family:inherit;height:38px}
+  .btn-del-team:hover{border-color:#A32D2D;color:#A32D2D}
+  .btn-add-member{font-size:12px;padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text-muted);font-family:inherit}
+  .btn-add-member:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* CONFIG TAB */
+  .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .config-note{font-size:12px;color:var(--text-hint);margin-top:6px}
 
   /* TOAST */
   .toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all 0.25s}
@@ -115,8 +150,10 @@
   @media(max-width:600px){
     .table-header,.obra-row{grid-template-columns:1fr auto}
     .th:not(:first-child),.td:not(:last-child){display:none}
-    .obra-row-name,.obra-row-sub{display:block}
-    .form-row{grid-template-columns:1fr}
+    .form-row,.config-grid,.team-member-row{grid-template-columns:1fr}
+    .admin-header{padding:0 16px}
+    .tab-bar{padding:0 16px;overflow-x:auto}
+    .admin-main{padding:20px 16px}
   }
 </style>
 </head>
@@ -148,30 +185,170 @@
     </div>
   </div>
 
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('obras')">🏗️ Obras</button>
+    <button class="tab-btn" onclick="switchTab('historia')">📖 Historia</button>
+    <button class="tab-btn" onclick="switchTab('config')">⚙️ Configuración</button>
+  </div>
+
   <div class="admin-main">
-    <div class="admin-top">
-      <h1>Obras</h1>
-      <button class="btn-add" onclick="openForm()">+ Agregar obra</button>
-    </div>
-    <div class="obras-table">
-      <div class="table-header">
-        <div class="th">Obra</div>
-        <div class="th">Tipo</div>
-        <div class="th">Año</div>
-        <div class="th">Estado</div>
-        <div class="th"></div>
+
+    <!-- TAB OBRAS -->
+    <div class="tab-pane active" id="tab-obras">
+      <div class="section-head">
+        <div>
+          <h2>Obras</h2>
+          <p>Administrá el portfolio de proyectos</p>
+        </div>
+        <button class="btn-add" onclick="openObraForm()">+ Agregar obra</button>
       </div>
-      <div id="table-body"><div class="table-loading">Cargando...</div></div>
+      <div class="obras-table">
+        <div class="table-header">
+          <div class="th">Obra</div>
+          <div class="th">Tipo</div>
+          <div class="th">Año</div>
+          <div class="th">Estado</div>
+          <div class="th"></div>
+        </div>
+        <div id="table-body"><div class="table-loading">Cargando...</div></div>
+      </div>
     </div>
+
+    <!-- TAB HISTORIA -->
+    <div class="tab-pane" id="tab-historia">
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="section-head" style="margin-bottom:0">
+          <div>
+            <p class="card-title">Línea de tiempo</p>
+            <p class="card-sub">Los hitos principales de la empresa que aparecen en la sección Historia</p>
+          </div>
+          <button class="btn-add" onclick="openHistoriaForm()">+ Agregar hito</button>
+        </div>
+        <div style="margin-top:20px">
+          <div class="historia-list" id="historia-list"><div class="table-loading">Cargando...</div></div>
+        </div>
+      </div>
+
+      <!-- Equipo -->
+      <div class="card">
+        <p class="card-title">Equipo fundador</p>
+        <p class="card-sub">Los socios que aparecen en la sección Historia</p>
+        <div class="team-list" id="team-list"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="btn-add-member" onclick="addTeamMember()">+ Agregar miembro</button>
+          <button class="btn-save-inline" onclick="saveEquipo()" id="btn-save-equipo">Guardar equipo</button>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="card">
+        <p class="card-title">Frase destacada</p>
+        <p class="card-sub">La frase que aparece al final de la sección Historia</p>
+        <div class="form-group">
+          <label class="form-label">Texto de la frase</label>
+          <textarea class="form-textarea" id="quote-texto" placeholder='"Nuestra frase..."' style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label class="form-label">Firma / autor</label>
+          <input type="text" class="form-input" id="quote-autor" placeholder="— Nuestra Casa S.A., Chivilcoy">
+        </div>
+        <button class="btn-save-inline" onclick="saveQuote()" id="btn-save-quote">Guardar frase</button>
+      </div>
+
+    </div>
+
+    <!-- TAB CONFIGURACIÓN -->
+    <div class="tab-pane" id="tab-config">
+
+      <!-- Stats hero -->
+      <div class="card">
+        <p class="card-title">Estadísticas del hero</p>
+        <p class="card-sub">Los 4 números que aparecen en la parte inferior del hero principal</p>
+        <div class="config-grid">
+          <div class="form-group">
+            <label class="form-label">Años de trayectoria (número)</label>
+            <input type="text" class="form-input" id="stat-anios" placeholder="Ej: +30">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Obras realizadas (número)</label>
+            <input type="text" class="form-input" id="stat-obras" placeholder="Ej: +200">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Compromiso</label>
+            <input type="text" class="form-input" id="stat-comp" placeholder="Ej: 100%">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Socios fundadores</label>
+            <input type="text" class="form-input" id="stat-socios" placeholder="Ej: 2">
+          </div>
+        </div>
+        <button class="btn-save-inline" onclick="saveStats()" id="btn-save-stats">Guardar estadísticas</button>
+      </div>
+
+      <!-- Hero título -->
+      <div class="card">
+        <p class="card-title">Texto del hero</p>
+        <p class="card-sub">El título y subtítulo grandes que se ven al entrar al sitio</p>
+        <div class="form-group">
+          <label class="form-label">Título principal</label>
+          <input type="text" class="form-input" id="hero-titulo" placeholder="Ej: Más de 30 años construyendo tu hogar.">
+          <p class="config-note">La última palabra se muestra en color naranja automáticamente.</p>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label class="form-label">Subtítulo</label>
+          <textarea class="form-textarea" id="hero-subtitulo" style="min-height:60px" placeholder="Una o dos líneas descriptivas..."></textarea>
+        </div>
+        <button class="btn-save-inline" onclick="saveHero()" id="btn-save-hero">Guardar hero</button>
+      </div>
+
+      <!-- Contacto -->
+      <div class="card">
+        <p class="card-title">Información de contacto</p>
+        <p class="card-sub">Los datos que aparecen en la sección Contacto</p>
+        <div class="form-group">
+          <label class="form-label">Dirección</label>
+          <input type="text" class="form-input" id="cont-direccion" placeholder="Av. Sarmiento 174, Chivilcoy">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Teléfono (mostrar)</label>
+            <input type="text" class="form-input" id="cont-tel" placeholder="+54 2346 42-2450">
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp (número internacional)</label>
+            <input type="text" class="form-input" id="cont-wa" placeholder="5492346422450">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="cont-email" placeholder="info@nuestracasa.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Instagram (sin @)</label>
+            <input type="text" class="form-input" id="cont-ig" placeholder="nuestracasa_s.a">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label class="form-label">Ciudad / descripción ubicación</label>
+          <input type="text" class="form-input" id="cont-ciudad" placeholder="Chivilcoy, Buenos Aires">
+        </div>
+        <button class="btn-save-inline" onclick="saveContacto()" id="btn-save-cont">Guardar contacto</button>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
-<!-- MODAL FORM -->
+<!-- MODAL OBRA -->
 <div class="modal-overlay" id="form-modal">
   <div class="modal">
     <div class="modal-header">
       <p class="modal-title" id="form-title">Nueva obra</p>
-      <button class="modal-close-btn" onclick="closeForm()">✕</button>
+      <button class="modal-close-btn" onclick="closeObraForm()">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="form-id">
@@ -213,12 +390,47 @@
           <button class="btn-add-url" onclick="addFotoUrl()">Agregar</button>
         </div>
         <div id="fotos-preview" class="fotos-preview" style="margin-top:10px"></div>
-        <p style="font-size:11px;color:var(--text-hint);margin-top:6px">Copiá el link directo de cada foto desde el Instagram y pegalo acá.</p>
+        <p style="font-size:11px;color:var(--text-hint);margin-top:6px">Copiá el link directo de cada foto desde Instagram y pegalo acá.</p>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeForm()">Cancelar</button>
-      <button class="btn-save" id="btn-save" onclick="saveObra()">Guardar obra</button>
+      <button class="btn-cancel" onclick="closeObraForm()">Cancelar</button>
+      <button class="btn-save" id="btn-save-obra" onclick="saveObra()">Guardar obra</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIA ITEM -->
+<div class="modal-overlay" id="historia-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <p class="modal-title" id="historia-modal-title">Nuevo hito</p>
+      <button class="modal-close-btn" onclick="closeHistoriaForm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="hito-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Año o período *</label>
+          <input type="text" class="form-input" id="hito-anio" placeholder="Ej: 1993 o 2010s">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Orden</label>
+          <input type="number" class="form-input" id="hito-orden" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Título del hito *</label>
+        <input type="text" class="form-input" id="hito-titulo" placeholder="Ej: Fundación">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-textarea" id="hito-desc" placeholder="Una o dos líneas sobre este momento..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeHistoriaForm()">Cancelar</button>
+      <button class="btn-save" id="btn-save-hito" onclick="saveHito()">Guardar hito</button>
     </div>
   </div>
 </div>
@@ -235,30 +447,41 @@ const HEADERS = {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Con
 let obras = [];
 let pendingFotos = [];
 let existingFotos = [];
+let historiaItems = [];
+let teamMembers = [];
+let configData = {};
 
-// LOGIN
+// ─── LOGIN ───────────────────────────────────────────────
 function doLogin() {
-  const v = document.getElementById('pwd-input').value;
-  if (v === ADMIN_PASS) {
+  if (document.getElementById('pwd-input').value === ADMIN_PASS) {
     sessionStorage.setItem('nc_auth', '1');
     document.getElementById('login-wrap').style.display = 'none';
     document.getElementById('admin-wrap').style.display = 'block';
-    loadObras();
+    initAdmin();
   } else {
     document.getElementById('login-error').style.display = 'block';
   }
 }
-function logout() {
-  sessionStorage.removeItem('nc_auth');
-  location.reload();
-}
+function logout() { sessionStorage.removeItem('nc_auth'); location.reload(); }
 if (sessionStorage.getItem('nc_auth')) {
   document.getElementById('login-wrap').style.display = 'none';
   document.getElementById('admin-wrap').style.display = 'block';
-  loadObras();
+  initAdmin();
 }
 
-// CARGAR OBRAS
+async function initAdmin() {
+  await Promise.all([loadObras(), loadHistoria(), loadConfig()]);
+}
+
+// ─── TABS ─────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ─── OBRAS ────────────────────────────────────────────────
 async function loadObras() {
   const res = await fetch(`${SUPA_URL}/rest/v1/obras?order=created_at.desc`, {headers: HEADERS});
   obras = await res.json();
@@ -275,7 +498,7 @@ function renderTable() {
     <div class="obra-row">
       <div>
         <p class="obra-row-name">${o.nombre}</p>
-        <p class="obra-row-sub">${o.descripcion ? o.descripcion.slice(0,50) + (o.descripcion.length > 50 ? '…' : '') : 'Sin descripción'}</p>
+        <p class="obra-row-sub">${o.descripcion ? o.descripcion.slice(0,60) + (o.descripcion.length > 60 ? '…' : '') : 'Sin descripción'}</p>
       </div>
       <div class="td">${o.tipo}</div>
       <div class="td">${o.anio || '—'}</div>
@@ -288,10 +511,8 @@ function renderTable() {
   `).join('');
 }
 
-// FORM
-function openForm(id) {
-  pendingFotos = [];
-  existingFotos = [];
+function openObraForm() {
+  pendingFotos = []; existingFotos = [];
   document.getElementById('form-id').value = '';
   document.getElementById('form-nombre').value = '';
   document.getElementById('form-tipo').value = 'Casa';
@@ -310,10 +531,8 @@ async function editObra(id) {
   const o = obras.find(x => x.id === id);
   if (!o) return;
   pendingFotos = [];
-
   const fotosRes = await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}&order=orden`, {headers: HEADERS});
   existingFotos = await fotosRes.json();
-
   document.getElementById('form-id').value = o.id;
   document.getElementById('form-nombre').value = o.nombre;
   document.getElementById('form-tipo').value = o.tipo;
@@ -323,20 +542,17 @@ async function editObra(id) {
   document.getElementById('foto-url-input').value = '';
   document.getElementById('fotos-preview').innerHTML = '';
   document.getElementById('form-title').textContent = 'Editar obra';
-
-  const existingWrap = document.getElementById('fotos-existing');
-  existingWrap.innerHTML = existingFotos.map((f,i) => `
+  document.getElementById('fotos-existing').innerHTML = existingFotos.map(f => `
     <div class="foto-preview-item" id="ef-${f.id}">
       <img src="${f.foto_url}" alt="foto">
       <button class="foto-remove" onclick="removeExistingFoto('${f.id}')">✕</button>
     </div>
   `).join('');
-
   document.getElementById('form-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeForm() {
+function closeObraForm() {
   document.getElementById('form-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -356,26 +572,14 @@ function addFotoUrl() {
   input.value = '';
 }
 
-function removePendingFoto(idx) {
-  pendingFotos[idx] = null;
-  const el = document.getElementById('pf-' + idx);
-  if (el) el.remove();
-}
-
-function removeExistingFoto(id) {
-  existingFotos = existingFotos.filter(f => f.id !== id);
-  const el = document.getElementById('ef-' + id);
-  if (el) el.remove();
-}
+function removePendingFoto(idx) { pendingFotos[idx] = null; const el = document.getElementById('pf-'+idx); if(el) el.remove(); }
+function removeExistingFoto(id) { existingFotos = existingFotos.filter(f => f.id !== id); const el = document.getElementById('ef-'+id); if(el) el.remove(); }
 
 async function saveObra() {
   const nombre = document.getElementById('form-nombre').value.trim();
   if (!nombre) return showToast('El nombre es obligatorio.', false);
-
-  const btn = document.getElementById('btn-save');
-  btn.disabled = true;
-  btn.textContent = 'Guardando...';
-
+  const btn = document.getElementById('btn-save-obra');
+  btn.disabled = true; btn.textContent = 'Guardando...';
   const id = document.getElementById('form-id').value;
   const data = {
     nombre,
@@ -384,66 +588,265 @@ async function saveObra() {
     anio: parseInt(document.getElementById('form-anio').value) || null,
     descripcion: document.getElementById('form-desc').value.trim() || null,
   };
-
   let obraId = id;
   if (id) {
-    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {
-      method: 'PATCH', headers: {...HEADERS, 'Prefer': 'return=minimal'}, body: JSON.stringify(data)
-    });
-    // eliminar fotos que sacamos
-    const originalIds = (await (await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {headers: HEADERS})).json()).map(f => f.id);
+    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'}, body:JSON.stringify(data)});
+    const originalIds = (await (await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {headers:HEADERS})).json()).map(f => f.id);
     const keepIds = existingFotos.map(f => f.id);
     for (const fid of originalIds) {
-      if (!keepIds.includes(fid)) {
-        await fetch(`${SUPA_URL}/rest/v1/obra_fotos?id=eq.${fid}`, {method: 'DELETE', headers: HEADERS});
-      }
+      if (!keepIds.includes(fid)) await fetch(`${SUPA_URL}/rest/v1/obra_fotos?id=eq.${fid}`, {method:'DELETE', headers:HEADERS});
     }
   } else {
-    const res = await fetch(`${SUPA_URL}/rest/v1/obras`, {
-      method: 'POST', headers: {...HEADERS, 'Prefer': 'return=representation'}, body: JSON.stringify(data)
-    });
+    const res = await fetch(`${SUPA_URL}/rest/v1/obras`, {method:'POST', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)});
     const created = await res.json();
     obraId = created[0]?.id;
   }
-
-  // guardar fotos nuevas
   const newFotos = pendingFotos.filter(Boolean);
   if (newFotos.length && obraId) {
-    const payload = newFotos.map((url, i) => ({obra_id: obraId, foto_url: url, orden: existingFotos.length + i}));
-    await fetch(`${SUPA_URL}/rest/v1/obra_fotos`, {
-      method: 'POST', headers: HEADERS, body: JSON.stringify(payload)
-    });
-    // portada = primera foto
-    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${obraId}`, {
-      method: 'PATCH', headers: {...HEADERS, 'Prefer': 'return=minimal'}, body: JSON.stringify({portada_url: newFotos[0]})
-    });
+    await fetch(`${SUPA_URL}/rest/v1/obra_fotos`, {method:'POST', headers:HEADERS, body:JSON.stringify(newFotos.map((url,i) => ({obra_id:obraId, foto_url:url, orden:existingFotos.length+i})))});
+    await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${obraId}`, {method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'}, body:JSON.stringify({portada_url:newFotos[0]})});
   }
-
-  btn.disabled = false;
-  btn.textContent = 'Guardar obra';
-  closeForm();
-  showToast(id ? 'Obra actualizada ✓' : 'Obra agregada ✓', true);
-  loadObras();
+  btn.disabled = false; btn.textContent = 'Guardar obra';
+  closeObraForm(); showToast(id ? 'Obra actualizada ✓' : 'Obra agregada ✓', true); loadObras();
 }
 
 async function deleteObra(id, nombre) {
   if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
-  await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {method: 'DELETE', headers: HEADERS});
-  await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {method: 'DELETE', headers: HEADERS});
-  showToast('Obra eliminada.', true);
-  loadObras();
+  await fetch(`${SUPA_URL}/rest/v1/obra_fotos?obra_id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  await fetch(`${SUPA_URL}/rest/v1/obras?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  showToast('Obra eliminada.', true); loadObras();
 }
 
+document.getElementById('form-modal').addEventListener('click', e => { if(e.target.id==='form-modal') closeObraForm(); });
+
+// ─── HISTORIA ─────────────────────────────────────────────
+async function loadHistoria() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/historia_items?order=orden`, {headers: HEADERS});
+  historiaItems = await res.json();
+  renderHistoriaList();
+}
+
+function renderHistoriaList() {
+  const list = document.getElementById('historia-list');
+  if (!historiaItems.length) {
+    list.innerHTML = '<p style="color:var(--text-hint);font-size:14px;padding:12px">No hay hitos todavía.</p>';
+    return;
+  }
+  list.innerHTML = historiaItems.map(h => `
+    <div class="historia-item-row">
+      <div class="historia-item-year">${h.anio}</div>
+      <div class="historia-item-info">
+        <p class="historia-item-title">${h.titulo}</p>
+        ${h.descripcion ? `<p class="historia-item-desc">${h.descripcion.slice(0,80)}${h.descripcion.length>80?'…':''}</p>` : ''}
+      </div>
+      <div class="historia-item-actions">
+        <button class="btn-edit" onclick="editHito('${h.id}')">Editar</button>
+        <button class="btn-del" onclick="deleteHito('${h.id}','${h.titulo.replace(/'/g,"\\'")}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openHistoriaForm() {
+  document.getElementById('hito-id').value = '';
+  document.getElementById('hito-anio').value = '';
+  document.getElementById('hito-titulo').value = '';
+  document.getElementById('hito-desc').value = '';
+  document.getElementById('hito-orden').value = historiaItems.length;
+  document.getElementById('historia-modal-title').textContent = 'Nuevo hito';
+  document.getElementById('historia-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function editHito(id) {
+  const h = historiaItems.find(x => x.id === id);
+  if (!h) return;
+  document.getElementById('hito-id').value = h.id;
+  document.getElementById('hito-anio').value = h.anio;
+  document.getElementById('hito-titulo').value = h.titulo;
+  document.getElementById('hito-desc').value = h.descripcion || '';
+  document.getElementById('hito-orden').value = h.orden;
+  document.getElementById('historia-modal-title').textContent = 'Editar hito';
+  document.getElementById('historia-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeHistoriaForm() {
+  document.getElementById('historia-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function saveHito() {
+  const anio = document.getElementById('hito-anio').value.trim();
+  const titulo = document.getElementById('hito-titulo').value.trim();
+  if (!anio || !titulo) return showToast('El año y el título son obligatorios.', false);
+  const btn = document.getElementById('btn-save-hito');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  const id = document.getElementById('hito-id').value;
+  const data = {anio, titulo, descripcion: document.getElementById('hito-desc').value.trim() || null, orden: parseInt(document.getElementById('hito-orden').value) || 0};
+  if (id) {
+    await fetch(`${SUPA_URL}/rest/v1/historia_items?id=eq.${id}`, {method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'}, body:JSON.stringify(data)});
+  } else {
+    await fetch(`${SUPA_URL}/rest/v1/historia_items`, {method:'POST', headers:HEADERS, body:JSON.stringify(data)});
+  }
+  btn.disabled = false; btn.textContent = 'Guardar hito';
+  closeHistoriaForm(); showToast(id ? 'Hito actualizado ✓' : 'Hito agregado ✓', true); loadHistoria();
+}
+
+async function deleteHito(id, titulo) {
+  if (!confirm(`¿Eliminar "${titulo}"?`)) return;
+  await fetch(`${SUPA_URL}/rest/v1/historia_items?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  showToast('Hito eliminado.', true); loadHistoria();
+}
+
+document.getElementById('historia-modal').addEventListener('click', e => { if(e.target.id==='historia-modal') closeHistoriaForm(); });
+
+// ─── CONFIG ───────────────────────────────────────────────
+async function loadConfig() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/config`, {headers: HEADERS});
+  const rows = await res.json();
+  configData = {};
+  rows.forEach(r => { try { configData[r.key] = JSON.parse(r.value); } catch(e) { configData[r.key] = r.value; } });
+
+  // Stats
+  const stats = configData.site_stats || {};
+  document.getElementById('stat-anios').value = stats.anios || '+30';
+  document.getElementById('stat-obras').value = stats.obras || '+200';
+  document.getElementById('stat-comp').value = stats.compromiso || '100%';
+  document.getElementById('stat-socios').value = stats.socios || '2';
+
+  // Hero
+  const hero = configData.hero || {};
+  document.getElementById('hero-titulo').value = hero.titulo || '';
+  document.getElementById('hero-subtitulo').value = hero.subtitulo || '';
+
+  // Contacto
+  const cont = configData.contacto || {};
+  document.getElementById('cont-direccion').value = cont.direccion || '';
+  document.getElementById('cont-tel').value = cont.telefono || '';
+  document.getElementById('cont-wa').value = cont.whatsapp || '';
+  document.getElementById('cont-email').value = cont.email || '';
+  document.getElementById('cont-ig').value = cont.instagram || '';
+  document.getElementById('cont-ciudad').value = cont.ciudad || '';
+
+  // Quote
+  const quote = configData.quote || {};
+  document.getElementById('quote-texto').value = quote.texto || '';
+  document.getElementById('quote-autor').value = quote.autor || '';
+
+  // Equipo
+  teamMembers = configData.equipo ? (Array.isArray(configData.equipo) ? configData.equipo : JSON.parse(configData.equipo)) : [];
+  renderTeamList();
+}
+
+async function saveConfig(key, value) {
+  await fetch(`${SUPA_URL}/rest/v1/config?key=eq.${key}`, {
+    method: 'PATCH',
+    headers: {...HEADERS, 'Prefer': 'return=minimal'},
+    body: JSON.stringify({value: JSON.stringify(value), updated_at: new Date().toISOString()})
+  });
+}
+
+async function saveStats() {
+  const btn = document.getElementById('btn-save-stats');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  await saveConfig('site_stats', {
+    anios: document.getElementById('stat-anios').value.trim(),
+    obras: document.getElementById('stat-obras').value.trim(),
+    compromiso: document.getElementById('stat-comp').value.trim(),
+    socios: document.getElementById('stat-socios').value.trim()
+  });
+  btn.disabled = false; btn.textContent = 'Guardar estadísticas';
+  showToast('Estadísticas guardadas ✓', true);
+}
+
+async function saveHero() {
+  const btn = document.getElementById('btn-save-hero');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  await saveConfig('hero', {
+    titulo: document.getElementById('hero-titulo').value.trim(),
+    subtitulo: document.getElementById('hero-subtitulo').value.trim()
+  });
+  btn.disabled = false; btn.textContent = 'Guardar hero';
+  showToast('Hero guardado ✓', true);
+}
+
+async function saveContacto() {
+  const btn = document.getElementById('btn-save-cont');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  await saveConfig('contacto', {
+    direccion: document.getElementById('cont-direccion').value.trim(),
+    telefono: document.getElementById('cont-tel').value.trim(),
+    whatsapp: document.getElementById('cont-wa').value.trim(),
+    email: document.getElementById('cont-email').value.trim(),
+    instagram: document.getElementById('cont-ig').value.trim(),
+    ciudad: document.getElementById('cont-ciudad').value.trim()
+  });
+  btn.disabled = false; btn.textContent = 'Guardar contacto';
+  showToast('Contacto guardado ✓', true);
+}
+
+async function saveQuote() {
+  const btn = document.getElementById('btn-save-quote');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  await saveConfig('quote', {
+    texto: document.getElementById('quote-texto').value.trim(),
+    autor: document.getElementById('quote-autor').value.trim()
+  });
+  btn.disabled = false; btn.textContent = 'Guardar frase';
+  showToast('Frase guardada ✓', true);
+}
+
+// ─── EQUIPO ───────────────────────────────────────────────
+function renderTeamList() {
+  const list = document.getElementById('team-list');
+  list.innerHTML = teamMembers.map((m, i) => `
+    <div class="team-member-row">
+      <div class="form-group">
+        ${i === 0 ? '<label class="form-label">Nombre completo</label>' : ''}
+        <input type="text" class="form-input" value="${m.nombre || ''}" oninput="teamMembers[${i}].nombre=this.value" placeholder="Ing. Juan Pérez">
+      </div>
+      <div class="form-group">
+        ${i === 0 ? '<label class="form-label">Rol / cargo</label>' : ''}
+        <input type="text" class="form-input" value="${m.rol || ''}" oninput="teamMembers[${i}].rol=this.value" placeholder="Socio fundador · Ingeniería">
+      </div>
+      <div class="form-group">
+        ${i === 0 ? '<label class="form-label">Iniciales</label>' : ''}
+        <input type="text" class="form-input" value="${m.iniciales || ''}" oninput="teamMembers[${i}].iniciales=this.value" placeholder="JP" maxlength="3">
+      </div>
+      <div class="form-group">
+        ${i === 0 ? '<label class="form-label">&nbsp;</label>' : ''}
+        <button class="btn-del-team" onclick="removeTeamMember(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addTeamMember() {
+  teamMembers.push({nombre: '', rol: '', iniciales: ''});
+  renderTeamList();
+}
+
+function removeTeamMember(i) {
+  teamMembers.splice(i, 1);
+  renderTeamList();
+}
+
+async function saveEquipo() {
+  const btn = document.getElementById('btn-save-equipo');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  await saveConfig('equipo', teamMembers);
+  btn.disabled = false; btn.textContent = 'Guardar equipo';
+  showToast('Equipo guardado ✓', true);
+}
+
+// ─── TOAST ────────────────────────────────────────────────
 function showToast(msg, ok) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = `toast ${ok ? 'toast-ok' : 'toast-err'} show`;
   setTimeout(() => t.classList.remove('show'), 3000);
 }
-
-document.getElementById('form-modal').addEventListener('click', e => {
-  if (e.target.id === 'form-modal') closeForm();
-});
 </script>
 </body>
 </html>
