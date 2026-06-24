@@ -150,8 +150,21 @@
   .modal-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-hint);line-height:1;padding:4px}
   .modal-body{padding:20px 24px 24px}
   .modal-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-  .modal-foto{height:120px;border-radius:8px;background:var(--bg2);overflow:hidden}
-  .modal-foto img{width:100%;height:100%;object-fit:cover}
+  .modal-foto{height:120px;border-radius:8px;background:var(--bg2);overflow:hidden;cursor:zoom-in}
+  .modal-foto img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s}
+  .modal-foto:hover img{transform:scale(1.04)}
+
+  /* LIGHTBOX */
+  #lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.93);align-items:center;justify-content:center;flex-direction:column}
+  #lightbox.open{display:flex}
+  #lightbox img{max-width:90vw;max-height:82vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,0.6)}
+  .lb-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;opacity:0.7;transition:opacity 0.15s;line-height:1}
+  .lb-close:hover{opacity:1}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:28px;cursor:pointer;padding:12px 16px;border-radius:8px;transition:background 0.15s;line-height:1}
+  .lb-nav:hover{background:rgba(255,255,255,0.25)}
+  .lb-prev{left:12px}
+  .lb-next{right:12px}
+  .lb-counter{position:absolute;bottom:16px;color:rgba(255,255,255,0.5);font-size:13px}
   .modal-foto-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--cream2)}
   .modal-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
   .modal-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -341,6 +354,14 @@
     </div>
     <div class="modal-body">
       <div class="modal-fotos" id="modal-fotos"></div>
+      <!-- LIGHTBOX -->
+      <div id="lightbox" onclick="closeLightbox(event)">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <button class="lb-nav lb-prev" onclick="lbNav(-1);event.stopPropagation()">‹</button>
+        <img id="lb-img" src="" alt="">
+        <button class="lb-nav lb-next" onclick="lbNav(1);event.stopPropagation()">›</button>
+        <span class="lb-counter" id="lb-counter"></span>
+      </div>
       <p class="modal-desc" id="modal-desc"></p>
       <div class="modal-tags" id="modal-tags"></div>
     </div>
@@ -417,10 +438,12 @@ async function openModal(id) {
   });
   const fotos = await fotosRes.json();
 
-  const fotoSlots = fotos.length
-    ? fotos.map(f => `<div class="modal-foto"><img src="${f.foto_url}" alt="foto" loading="lazy"></div>`).join('')
+  const fotoUrls = fotos.map(f => f.foto_url);
+  const fotoSlots = fotoUrls.length
+    ? fotoUrls.map((url, i) => `<div class="modal-foto" onclick="openLightbox(${i})"><img src="${url}" alt="foto" loading="lazy"></div>`).join('')
     : `<div class="modal-foto"><div class="modal-foto-placeholder">${TIPO_ICON[obra.tipo] || '🏗️'}</div></div>`;
   document.getElementById('modal-fotos').innerHTML = fotoSlots;
+  window._lbFotos = fotoUrls;
 
   document.getElementById('modal-tags').innerHTML = [obra.tipo, obra.estado, obra.anio ? obra.anio : null]
     .filter(Boolean).map(t => `<span class="modal-tag">${t}</span>`).join('');
@@ -436,6 +459,37 @@ function closeModalBtn() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+// LIGHTBOX
+let _lbIdx = 0;
+function openLightbox(idx) {
+  const fotos = window._lbFotos || [];
+  if (!fotos.length) return;
+  _lbIdx = idx;
+  document.getElementById('lb-img').src = fotos[_lbIdx];
+  document.getElementById('lb-counter').textContent = fotos.length > 1 ? `${_lbIdx + 1} / ${fotos.length}` : '';
+  document.getElementById('lightbox').classList.add('open');
+  document.querySelector('.lb-prev').style.display = fotos.length > 1 ? '' : 'none';
+  document.querySelector('.lb-next').style.display = fotos.length > 1 ? '' : 'none';
+}
+function closeLightbox(e) {
+  if (!e || e.target.id === 'lightbox' || e.target.classList.contains('lb-close')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+function lbNav(dir) {
+  const fotos = window._lbFotos || [];
+  _lbIdx = (_lbIdx + dir + fotos.length) % fotos.length;
+  document.getElementById('lb-img').src = fotos[_lbIdx];
+  document.getElementById('lb-counter').textContent = `${_lbIdx + 1} / ${fotos.length}`;
+}
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') lb.classList.remove('open');
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft') lbNav(-1);
+});
 
 function toggleMenu() {
   const links = document.querySelector('.nav-links');
@@ -469,70 +523,4 @@ async function fetchConfig() {
       if (s.socios) document.getElementById('stat-socios').textContent = s.socios;
     }
 
-    // Contacto
-    if (cfg.contacto) {
-      const c = cfg.contacto;
-      if (c.direccion) document.getElementById('cont-dir').textContent = c.direccion;
-      if (c.telefono) document.getElementById('cont-tel-val').textContent = c.telefono;
-      if (c.email) {
-        document.getElementById('cont-email-val').textContent = c.email;
-        document.getElementById('cont-email-val').href = 'mailto:' + c.email;
-        document.getElementById('btn-mail-link').href = 'mailto:' + c.email;
-      }
-      if (c.instagram) document.getElementById('cont-ig-val').textContent = '@' + c.instagram;
-      if (c.whatsapp) {
-        const telEl = document.getElementById('cont-tel-val');
-        telEl.textContent = c.whatsapp;
-        telEl.href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
-        document.getElementById('btn-wa-link').href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
-      }
-    }
-
-    // Quote
-    if (cfg.quote) {
-      if (cfg.quote.texto) document.getElementById('quote-texto').textContent = '"' + cfg.quote.texto + '"';
-      if (cfg.quote.autor) document.getElementById('quote-autor').textContent = '— ' + cfg.quote.autor;
-    }
-
-    // Equipo
-    if (cfg.equipo) {
-      const equipo = Array.isArray(cfg.equipo) ? cfg.equipo : JSON.parse(cfg.equipo);
-      const avatarColors = ['av-em','av-sl','av-c3','av-c4'];
-      document.getElementById('team-cards-container').innerHTML = equipo.map((m, i) => `
-        <div class="team-card">
-          <div class="team-avatar ${avatarColors[i % avatarColors.length]}">${m.iniciales || m.nombre.slice(0,2).toUpperCase()}</div>
-          <div>
-            <p class="team-name">${m.nombre}</p>
-            <p class="team-role">${m.rol}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-  } catch(e) { console.warn('Config no disponible', e); }
-}
-
-async function fetchHistoria() {
-  try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/historia_items?order=orden`, {headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}});
-    const items = await res.json();
-    if (!items.length) return;
-    const container = document.getElementById('timeline-container');
-    container.innerHTML = items.map((h, i) => {
-      const isLast = i === items.length - 1;
-      const circleStyle = isLast ? 'style="background:#EAF3DE;color:#3B6D11;border-color:#97C459"' : '';
-      const circleLabel = h.anio.length <= 4 ? h.anio.slice(-2) : h.anio.slice(0,3);
-      return `
-        <div class="tl-item">
-          <div class="tl-circle" ${circleStyle}>${circleLabel}</div>
-          <div class="tl-text">
-            <p class="tl-year">${h.anio} — ${h.titulo}</p>
-            ${h.descripcion ? `<p class="tl-desc">${h.descripcion}</p>` : ''}
-          </div>
-        </div>
-      `;
-    }).join('');
-  } catch(e) { console.warn('Historia no disponible', e); }
-}
-</script>
-</body>
-</html>
+    // Co
