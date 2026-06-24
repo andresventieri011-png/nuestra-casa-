@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -289,17 +290,18 @@
           </div>
         </div>
         <div class="contacto-item">
-          <div class="contacto-icon">📞</div>
+          <div class="contacto-icon">💬</div>
           <div>
-            <p class="contacto-label">Teléfono</p>
-            <p class="contacto-val" id="cont-tel-val">+54 2346 42-2450</p>
+            <p class="contacto-label">WhatsApp</p>
+            <a class="contacto-val" href="https://wa.me/5492346572082" target="_blank" style="color:#D3D1C7;text-decoration:none;display:block">2346-572082</a>
+            <a class="contacto-val" id="cont-tel-val" href="https://wa.me/5492346572084" target="_blank" style="color:#D3D1C7;text-decoration:none;display:block;margin-top:2px">2346-572084</a>
           </div>
         </div>
         <div class="contacto-item">
           <div class="contacto-icon">📧</div>
           <div>
             <p class="contacto-label">Email</p>
-            <p class="contacto-val" id="cont-email-val">estudio@mlarq.com.ar</p>
+            <a class="contacto-val" id="cont-email-val" href="mailto:Estudio@mlarq.com.ar" style="color:#D3D1C7;text-decoration:none">Estudio@mlarq.com.ar</a>
           </div>
         </div>
         <div class="contacto-item">
@@ -311,10 +313,10 @@
         </div>
       </div>
       <div class="contacto-btns">
-        <a id="btn-wa-link" href="https://wa.me/5492346422450" target="_blank" class="btn-wa">
+        <a id="btn-wa-link" href="https://wa.me/5492346572082" target="_blank" class="btn-wa">
           💬 Escribinos por WhatsApp
         </a>
-        <a id="btn-mail-link" href="mailto:estudio@mlarq.com.ar" class="btn-mail">
+        <a id="btn-mail-link" href="mailto:Estudio@mlarq.com.ar" class="btn-mail">
           ✉️ Mandarnos un mail
         </a>
       </div>
@@ -474,10 +476,16 @@ async function fetchConfig() {
       if (c.telefono) document.getElementById('cont-tel-val').textContent = c.telefono;
       if (c.email) {
         document.getElementById('cont-email-val').textContent = c.email;
+        document.getElementById('cont-email-val').href = 'mailto:' + c.email;
         document.getElementById('btn-mail-link').href = 'mailto:' + c.email;
       }
       if (c.instagram) document.getElementById('cont-ig-val').textContent = '@' + c.instagram;
-      if (c.whatsapp) document.getElementById('btn-wa-link').href = 'https://wa.me/' + c.whatsapp;
+      if (c.whatsapp) {
+        const telEl = document.getElementById('cont-tel-val');
+        telEl.textContent = c.whatsapp;
+        telEl.href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
+        document.getElementById('btn-wa-link').href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
+      }
     }
 
     // Quote
