@@ -354,14 +354,6 @@
     </div>
     <div class="modal-body">
       <div class="modal-fotos" id="modal-fotos"></div>
-      <!-- LIGHTBOX -->
-      <div id="lightbox" onclick="closeLightbox(event)">
-        <button class="lb-close" onclick="closeLightbox()">✕</button>
-        <button class="lb-nav lb-prev" onclick="lbNav(-1);event.stopPropagation()">‹</button>
-        <img id="lb-img" src="" alt="">
-        <button class="lb-nav lb-next" onclick="lbNav(1);event.stopPropagation()">›</button>
-        <span class="lb-counter" id="lb-counter"></span>
-      </div>
       <p class="modal-desc" id="modal-desc"></p>
       <div class="modal-tags" id="modal-tags"></div>
     </div>
@@ -523,4 +515,79 @@ async function fetchConfig() {
       if (s.socios) document.getElementById('stat-socios').textContent = s.socios;
     }
 
-    // Co
+    // Contacto
+    if (cfg.contacto) {
+      const c = cfg.contacto;
+      if (c.direccion) document.getElementById('cont-dir').textContent = c.direccion;
+      if (c.telefono) document.getElementById('cont-tel-val').textContent = c.telefono;
+      if (c.email) {
+        document.getElementById('cont-email-val').textContent = c.email;
+        document.getElementById('cont-email-val').href = 'mailto:' + c.email;
+        document.getElementById('btn-mail-link').href = 'mailto:' + c.email;
+      }
+      if (c.instagram) document.getElementById('cont-ig-val').textContent = '@' + c.instagram;
+      if (c.whatsapp) {
+        const telEl = document.getElementById('cont-tel-val');
+        telEl.textContent = c.whatsapp;
+        telEl.href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
+        document.getElementById('btn-wa-link').href = 'https://wa.me/' + c.whatsapp.replace(/\D/g,'');
+      }
+    }
+
+    // Quote
+    if (cfg.quote) {
+      if (cfg.quote.texto) document.getElementById('quote-texto').textContent = '"' + cfg.quote.texto + '"';
+      if (cfg.quote.autor) document.getElementById('quote-autor').textContent = '— ' + cfg.quote.autor;
+    }
+
+    // Equipo
+    if (cfg.equipo) {
+      const equipo = Array.isArray(cfg.equipo) ? cfg.equipo : JSON.parse(cfg.equipo);
+      const avatarColors = ['av-em','av-sl','av-c3','av-c4'];
+      document.getElementById('team-cards-container').innerHTML = equipo.map((m, i) => `
+        <div class="team-card">
+          <div class="team-avatar ${avatarColors[i % avatarColors.length]}">${m.iniciales || m.nombre.slice(0,2).toUpperCase()}</div>
+          <div>
+            <p class="team-name">${m.nombre}</p>
+            <p class="team-role">${m.rol}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) { console.warn('Config no disponible', e); }
+}
+
+async function fetchHistoria() {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/historia_items?order=orden`, {headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}});
+    const items = await res.json();
+    if (!items.length) return;
+    const container = document.getElementById('timeline-container');
+    container.innerHTML = items.map((h, i) => {
+      const isLast = i === items.length - 1;
+      const circleStyle = isLast ? 'style="background:#EAF3DE;color:#3B6D11;border-color:#97C459"' : '';
+      const circleLabel = h.anio.length <= 4 ? h.anio.slice(-2) : h.anio.slice(0,3);
+      return `
+        <div class="tl-item">
+          <div class="tl-circle" ${circleStyle}>${circleLabel}</div>
+          <div class="tl-text">
+            <p class="tl-year">${h.anio} — ${h.titulo}</p>
+            ${h.descripcion ? `<p class="tl-desc">${h.descripcion}</p>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) { console.warn('Historia no disponible', e); }
+}
+</script>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1);event.stopPropagation()">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbNav(1);event.stopPropagation()">›</button>
+  <span class="lb-counter" id="lb-counter"></span>
+</div>
+</body>
+</html>
